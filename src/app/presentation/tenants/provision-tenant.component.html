@@ -1,0 +1,105 @@
+<a routerLink="/tenants" class="back-link">
+  <mat-icon inline="true">arrow_back</mat-icon>
+  Tenants
+</a>
+
+@if (result(); as r) {
+  <section class="intake intake-done" aria-label="Tenant aprovisionado">
+    <span class="intake-eyebrow">Ingreso a la flota</span>
+    <h2>Tenant aprovisionado</h2>
+
+    @if (r.activationEmailSent) {
+      <p class="intake-note is-ok">Tenant creado. Se envió un email de activación al usuario master.</p>
+    } @else {
+      <p class="intake-note is-warning">
+        Tenant creado, pero no se pudo enviar el email de activación — avisale al usuario master por otro medio.
+      </p>
+    }
+
+    <dl class="result-summary">
+      <div class="result-row">
+        <dt>Subdominio</dt>
+        <dd>{{ subdomain }}</dd>
+      </div>
+      <div class="result-row">
+        <dt>Plan</dt>
+        <dd>{{ r.planCode }}</dd>
+      </div>
+      <div class="result-row">
+        <dt>Vigencia hasta</dt>
+        <dd>{{ r.trialEndsAt | date: 'mediumDate' }}</dd>
+      </div>
+    </dl>
+
+    <button mat-flat-button color="primary" class="intake-submit" (click)="goToTenants()">Volver al registro</button>
+  </section>
+} @else {
+  <section class="intake" aria-label="Aprovisionar nuevo tenant">
+    <span class="intake-eyebrow">Ingreso a la flota</span>
+    <h2>Aprovisionar tenant</h2>
+    <p class="intake-hint">Crea la empresa, su sede administrativa y el usuario master en un solo paso.</p>
+
+    <div class="intake-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre de la empresa</mat-label>
+        <input matInput name="name" [(ngModel)]="name" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Subdominio</mat-label>
+        <input matInput name="subdomain" [(ngModel)]="subdomain" placeholder="acme" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email del usuario master</mat-label>
+        <input matInput name="masterEmail" type="email" [(ngModel)]="masterEmail" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del usuario master</mat-label>
+        <input matInput name="masterFullName" [(ngModel)]="masterFullName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Plan</mat-label>
+        <input
+          matInput
+          name="planCode"
+          [ngModel]="planQuery()"
+          (ngModelChange)="onPlanQueryChange($event)"
+          [matAutocomplete]="planAuto"
+          placeholder="FREE"
+          autocomplete="off"
+        />
+        <mat-hint>Escribí para buscar — vacío usa el plan FREE</mat-hint>
+        <mat-autocomplete #planAuto="matAutocomplete" (optionSelected)="onPlanOptionSelected($event)">
+          @for (plan of filteredPlans(); track plan.id) {
+            <mat-option [value]="plan.code">{{ plan.code }} — {{ plan.name }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Duración inicial (opcional, default 30)</mat-label>
+        <input matInput type="number" name="trialDays" min="1" [(ngModel)]="trialDays" placeholder="30" />
+        <span matTextSuffix>días</span>
+        <mat-hint>Ej: 30 para un mes, 365 para un año</mat-hint>
+      </mat-form-field>
+    </div>
+
+    @if (errorMessage(); as error) {
+      <p class="intake-note is-error">{{ error }}</p>
+    }
+
+    <button
+      mat-flat-button
+      color="primary"
+      class="intake-submit"
+      [disabled]="saving() || !name || !subdomain || !masterEmail || !masterFullName"
+      (click)="provision()"
+    >
+      @if (saving()) {
+        <mat-spinner diameter="18" />
+      } @else {
+        Aprovisionar tenant
+      }
+    </button>
+  </section>
+}

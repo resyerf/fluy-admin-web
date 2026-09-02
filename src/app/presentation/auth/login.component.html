@@ -1,0 +1,44 @@
+    <div class="auth-shell">
+      <aside class="auth-brand">
+        <span class="brand-mark">FLUY</span>
+        <span class="brand-sub">Consola de plataforma</span>
+        <p class="brand-line">Todos los tenants, un solo panel de control.</p>
+
+        <ul class="legend" aria-hidden="true">
+          <li class="signal is-go">Activos</li>
+          <li class="signal is-amber">En trial</li>
+          <li class="signal is-stop">Suspendidos</li>
+        </ul>
+      </aside>
+
+      <section class="auth-panel">
+        <div class="auth-form-wrap">
+          <span class="eyebrow">Acceso de SuperAdmin</span>
+          <h1>Iniciar sesión</h1>
+
+          <form (ngSubmit)="submit()">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput name="email" type="email" [(ngModel)]="email" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Contraseña</mat-label>
+              <input matInput name="password" type="password" [(ngModel)]="password" required />
+            </mat-form-field>
+
+            @if (errorMessage(); as error) {
+              <p class="error">{{ error }}</p>
+            }
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="loading()" class="submit-button">
+              @if (loading()) {
+                <mat-spinner diameter="20" />
+              } @else {
+                Ingresar
+              }
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>

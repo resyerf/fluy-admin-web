@@ -1,0 +1,25 @@
+    <mat-toolbar class="shell-toolbar">
+      <a routerLink="/tenants" class="brand">
+        <span class="brand-mark">FLUY</span>
+        <span class="brand-tenant">Consola de plataforma</span>
+      </a>
+
+      <nav class="shell-nav">
+        <a routerLink="/tenants" routerLinkActive="is-active">Tenants</a>
+        <a routerLink="/plans" routerLinkActive="is-active">Planes</a>
+        <a routerLink="/subscriptions" routerLinkActive="is-active">Suscripciones</a>
+      </nav>
+
+      <span class="spacer"></span>
+
+      @if (auth.currentUser(); as user) {
+        <span class="user-tag">{{ user.fullName }}</span>
+      }
+      <button class="logout-button" (click)="logout()" aria-label="Salir">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <main class="shell-content">
+      <router-outlet />
+    </main>

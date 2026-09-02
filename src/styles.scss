@@ -1,0 +1,257 @@
+/* ==========================================================================
+   FLUY — sistema de diseño (consola de plataforma)
+   Mismo lenguaje visual que fluy-web (tokens, signal, route-line), pero con
+   el cromado invertido a tinta oscura — quien opera la plataforma siempre
+   sabe, de un vistazo, que no está en el workspace de un tenant.
+
+   Paleta minimalista (revisión): mismos neutros grises fríos y el mismo
+   --accent de marca que fluy-web (ver ese archivo para el porqué) — la
+   consola comparte identidad con el producto, solo invierte el cromado del
+   toolbar/hero a --ink. --console-paper es el único token propio de esta
+   app: el tinte "instrumento" de los paneles de resumen (franja de
+   manifiesto, panel de alta de tenant), un paso más oscuro que --paper.
+   ========================================================================== */
+
+:root {
+  --ink: #14171b;
+  --ink-soft: #565b64;
+  --ink-faint: #8b909a;
+  --paper: #f6f6f4;
+  --surface: #ffffff;
+  --rail: #e2e4e2;
+  --rail-strong: #c4c7c5;
+
+  --accent: #2f5d50;
+  --signal-amber: #a66e1f;
+  --signal-go: var(--accent);
+  --signal-stop: #a6392b;
+
+  --console-paper: #eaebe9;
+
+  --font-display: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --font-body: 'Public Sans', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+h2 {
+  font-size: 1.35rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+p {
+  line-height: 1.55;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+/* Ver fluy-web/src/styles.scss para el porqué — mismo criterio acá. */
+a {
+  color: var(--accent);
+}
+a:visited {
+  color: var(--accent);
+}
+
+.main-content {
+  max-width: 1040px;
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.35rem;
+}
+
+/* ---- Signal — mismo vocabulario que fluy-web, ver ese archivo para el porqué ---- */
+.signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+.signal::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  min-width: 7px;
+  border-radius: 50%;
+  background: var(--rail-strong);
+}
+
+.signal.is-amber::before {
+  background: var(--signal-amber);
+}
+
+.signal.is-go::before {
+  background: var(--signal-go);
+}
+
+.signal.is-stop::before {
+  background: var(--signal-stop);
+}
+
+/* ==========================================================================
+   Material — reskin directo (ver fluy-web/src/styles.scss para el criterio).
+   --accent es lo interactivo (botón primario, indicador activo); --ink es
+   texto y cromado estructural (toolbar, avatar, paneles hero) — nunca una
+   acción, para que el acento de marca no se diluya apareciendo en todos
+   lados.
+   ========================================================================== */
+.mat-toolbar {
+  font-family: var(--font-display) !important;
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+}
+
+.mat-toolbar .mat-icon {
+  color: var(--paper) !important;
+}
+
+.mat-mdc-card {
+  border-radius: 6px !important;
+  border: 1px solid var(--rail);
+  box-shadow: none !important;
+  background: var(--surface) !important;
+}
+
+.mat-mdc-card-title {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  font-size: 1.05rem !important;
+  color: var(--ink) !important;
+}
+
+.mat-mdc-card-subtitle {
+  font-family: var(--font-mono) !important;
+  font-size: 0.75rem !important;
+  color: var(--ink-faint) !important;
+}
+
+.mdc-button {
+  font-family: var(--font-display) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  border-radius: 4px !important;
+}
+
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-filled-button-container-color: var(--accent);
+  --mdc-filled-button-label-text-color: var(--paper);
+}
+
+.mat-mdc-outlined-button {
+  --mdc-outlined-button-outline-color: var(--rail-strong);
+  --mdc-outlined-button-label-text-color: var(--ink);
+}
+
+.mat-mdc-outlined-button.mat-warn {
+  --mdc-outlined-button-label-text-color: var(--signal-stop);
+  --mdc-outlined-button-outline-color: var(--signal-stop);
+}
+
+.mat-mdc-button.mat-warn,
+.mat-mdc-unelevated-button.mat-warn {
+  --mat-text-button-label-text-color: var(--signal-stop);
+  --mdc-filled-button-container-color: var(--signal-stop);
+  --mdc-filled-button-label-text-color: var(--surface);
+}
+
+.mat-mdc-button.mat-primary,
+.mat-mdc-text-button.mat-primary {
+  --mat-text-button-label-text-color: var(--accent);
+}
+
+.mat-mdc-form-field,
+.mat-mdc-form-field-infix,
+.mat-mdc-input-element,
+.mdc-floating-label,
+.mat-mdc-floating-label,
+.mat-mdc-select-value,
+.mat-mdc-select-placeholder,
+.mat-mdc-option {
+  font-family: var(--font-body) !important;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline__leading,
+.mdc-text-field--outlined .mdc-notched-outline__notch,
+.mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: var(--rail) !important;
+}
+
+.mat-mdc-table {
+  font-family: var(--font-body) !important;
+  background: transparent !important;
+}
+
+.mat-mdc-header-cell {
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase;
+  color: var(--ink-faint) !important;
+  border-bottom-color: var(--rail) !important;
+}
+
+.mat-mdc-cell,
+.mat-mdc-footer-cell {
+  border-bottom-color: var(--rail) !important;
+  color: var(--ink) !important;
+}
+
+.mdc-linear-progress__bar-inner,
+.mat-mdc-progress-spinner circle {
+  stroke: var(--accent) !important;
+}
+
+/* ---- Autocomplete panel — mismo cromado de superficie que .mat-mdc-card. ---- */
+.mat-mdc-autocomplete-panel {
+  border: 1px solid var(--rail);
+  border-radius: 6px !important;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--ink) 12%, transparent) !important;
+}

@@ -1,0 +1,91 @@
+      .auth-shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .auth-brand {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 2.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+      .brand-mark {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.75rem;
+        letter-spacing: 0.02em;
+      }
+      .brand-sub {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        opacity: 0.65;
+        margin-top: -1rem;
+      }
+      .brand-line {
+        font-size: 0.95rem;
+        max-width: 20rem;
+        color: color-mix(in srgb, var(--paper) 85%, transparent);
+        margin: 0;
+      }
+      .legend {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 0.5rem 0 0;
+        padding: 0;
+      }
+      /* .signal es punto + texto neutro por defecto (--ink-soft) — sobre el panel
+         oscuro (--ink) ese gris casi no se ve, así que acá el texto pasa a un
+         tono claro. Los puntos de color (amber/go/stop) ya tienen suficiente
+         luminosidad propia para leerse igual sobre --ink que sobre --surface. */
+      .legend .signal {
+        color: color-mix(in srgb, var(--paper) 85%, transparent);
+      }
+      .auth-panel {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 2.5rem 1.5rem;
+      }
+      .auth-form-wrap {
+        width: 100%;
+        max-width: 320px;
+      }
+      h1 {
+        margin-bottom: 1.5rem;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      mat-form-field {
+        width: 100%;
+      }
+      .submit-button {
+        width: 100%;
+        margin-top: 0.5rem;
+        height: 2.75rem;
+      }
+      .error {
+        color: var(--signal-stop);
+        font-size: 0.85rem;
+      }
+      @media (min-width: 800px) {
+        .auth-shell {
+          flex-direction: row;
+        }
+        .auth-brand {
+          width: 42%;
+          padding: 3.5rem;
+          justify-content: center;
+        }
+        .auth-panel {
+          width: 58%;
+          align-items: center;
+        }
+      }

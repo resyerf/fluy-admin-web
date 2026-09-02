@@ -1,0 +1,38 @@
+    <h2>Planes</h2>
+    <p class="intro">
+      Catálogo de planes y features de FLUY.
+    </p>
+
+    @if (loading()) {
+      <mat-spinner diameter="32" />
+    } @else {
+      <div class="plans-grid">
+        @for (plan of plans(); track plan.id) {
+          <mat-card class="plan-card">
+            <mat-card-header>
+              <mat-card-title>{{ plan.name }}</mat-card-title>
+              <mat-card-subtitle>{{ plan.code }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              @if (!plan.isActive) {
+                <span class="signal">Inactivo</span>
+              }
+              <ul class="feature-list">
+                @for (feature of plan.features; track feature.featureCode) {
+                  <li>
+                    <span class="feature-name">{{ feature.featureName }}</span>
+                    @if (feature.featureType === 'Boolean') {
+                      <span class="signal" [class]="feature.value === 'true' ? 'is-go' : ''">
+                        {{ feature.value === 'true' ? 'Incluido' : 'No incluido' }}
+                      </span>
+                    } @else {
+                      <span class="feature-value">{{ feature.value }}</span>
+                    }
+                  </li>
+                }
+              </ul>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }

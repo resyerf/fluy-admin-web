@@ -1,0 +1,197 @@
+/* ==========================================================================
+   Registro de tenants — pensado como el tablero de una torre de control:
+   el operador de la plataforma ve de un vistazo cuántas líneas (tenants)
+   están corriendo y cuántas están detenidas. El alta de una línea nueva
+   vive en su propia pantalla (provision-tenant), enlazada desde acá.
+   Extiende el vocabulario de .signal/.route-line ya establecido (una
+   Request viaja por una vía) un nivel arriba: acá cada fila ES una vía
+   completa.
+   ========================================================================== */
+
+:host {
+  display: block;
+  max-width: 1160px;
+}
+
+/* ---- Encabezado: título + alta de tenant, que ahora vive en su propia pantalla ---- */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.page-header h2 {
+  margin-bottom: 0;
+}
+.page-action {
+  flex-shrink: 0;
+}
+
+/* ---- Franja de manifiesto: los contadores en vivo por estado ---- */
+.manifest-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--rail);
+  border: 1px solid var(--rail);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.manifest-stat {
+  background: var(--console-paper);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.manifest-stat.is-total {
+  background: var(--ink);
+}
+.manifest-stat.is-total .manifest-value,
+.manifest-stat.is-total .manifest-label {
+  color: var(--paper);
+}
+.manifest-value {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.manifest-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.manifest-label .signal {
+  padding: 0;
+  border: none;
+  background: transparent;
+  min-width: 7px;
+}
+.manifest-label .signal::before {
+  width: 7px;
+  height: 7px;
+}
+@media (max-width: 480px) {
+  .manifest-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .manifest-label {
+    white-space: nowrap;
+  }
+}
+
+/* ---- Registro: lista de tenants con riel de estado ---- */
+.registry {
+  border: 1px solid var(--rail);
+  border-radius: 6px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.registry-empty {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.registry-empty p {
+  margin: 0;
+}
+.registry-empty-hint {
+  margin-top: 0.35rem !important;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+.registry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.registry-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.9rem;
+  border-bottom: 1px solid var(--rail);
+}
+.registry-row:last-child {
+  border-bottom: none;
+}
+.registry-rail {
+  width: 3px;
+  min-width: 3px;
+  background: var(--rail-strong);
+}
+.registry-row.is-go .registry-rail {
+  background: var(--signal-go);
+}
+.registry-row.is-amber .registry-rail {
+  background: var(--signal-amber);
+}
+.registry-row.is-stop .registry-rail {
+  background: var(--signal-stop);
+}
+.registry-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.85rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.registry-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.registry-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.registry-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+}
+.registry-code {
+  color: var(--ink-soft);
+}
+.registry-code::before {
+  content: '→ ';
+  color: var(--ink-faint);
+}
+.registry-dot {
+  opacity: 0.6;
+}
+.registry-action {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+}
+@media (max-width: 560px) {
+  .registry-row {
+    flex-wrap: wrap;
+  }
+  .registry-main {
+    padding: 0.85rem 0 0.4rem 0.9rem;
+  }
+  .registry-action {
+    padding: 0 1rem 0.85rem 1.2rem;
+  }
+}

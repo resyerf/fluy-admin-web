@@ -1,0 +1,67 @@
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Plataforma · Tenants</span>
+    <h2>Registro de tenants</h2>
+  </div>
+  <a mat-flat-button color="primary" routerLink="/tenants/new" class="page-action">Aprovisionar tenant</a>
+</div>
+
+@if (loading()) {
+  <mat-spinner diameter="32" />
+} @else {
+  <div class="manifest-strip" role="group" aria-label="Resumen de tenants por estado">
+    <div class="manifest-stat">
+      <span class="manifest-value">{{ counts().active }}</span>
+      <span class="manifest-label"><span class="signal is-go"></span>Activos</span>
+    </div>
+    <div class="manifest-stat">
+      <span class="manifest-value">{{ counts().suspended }}</span>
+      <span class="manifest-label"><span class="signal is-stop"></span>Suspendidos</span>
+    </div>
+    <div class="manifest-stat">
+      <span class="manifest-value">{{ counts().pending }}</span>
+      <span class="manifest-label"><span class="signal is-amber"></span>Pendientes</span>
+    </div>
+    <div class="manifest-stat is-total">
+      <span class="manifest-value">{{ counts().total }}</span>
+      <span class="manifest-label">Total en la flota</span>
+    </div>
+  </div>
+
+  <section class="registry" aria-label="Registro de tenants">
+    @if (tenants().length === 0) {
+      <div class="registry-empty">
+        <p>Ningún tenant registrado todavía.</p>
+        <p class="registry-empty-hint">Aprovisioná el primero con el botón de arriba.</p>
+      </div>
+    } @else {
+      <ul class="registry-list">
+        @for (tenant of tenants(); track tenant.id) {
+          <li class="registry-row" [class]="signalByStatus[tenant.status]">
+            <span class="registry-rail"></span>
+            <div class="registry-main">
+              <div class="registry-heading">
+                <span class="registry-name">{{ tenant.name }}</span>
+                <span class="signal" [class]="signalByStatus[tenant.status]">{{ statusLabel(tenant.status) }}</span>
+              </div>
+              <div class="registry-meta">
+                <span class="registry-code">{{ tenant.subdomain }}</span>
+                <span class="registry-dot">·</span>
+                <span>desde {{ tenant.createdAt | date: 'd MMM y' }}</span>
+              </div>
+            </div>
+            <div class="registry-action">
+              @if (tenant.status === 'Suspended') {
+                <button mat-stroked-button [disabled]="actingOn() === tenant.id" (click)="activate(tenant)">Activar</button>
+              } @else if (tenant.status === 'Active') {
+                <button mat-stroked-button color="warn" [disabled]="actingOn() === tenant.id" (click)="suspend(tenant)">
+                  Suspender
+                </button>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

@@ -1,0 +1,17 @@
+      .intro {
+        max-width: 720px;
+        color: var(--ink-soft);
+      }
+      .list-card {
+        max-width: 900px;
+      }
+      .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .subscriptions-table {
+        min-width: 640px;
+      }
+      .empty-note {
+        color: var(--ink-faint);
+      }
