@@ -13,21 +13,8 @@
   max-width: 1160px;
 }
 
-/* ---- Encabezado: título + alta de tenant, que ahora vive en su propia pantalla ---- */
-.page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-}
-.page-header h2 {
-  margin-bottom: 0;
-}
-.page-action {
-  flex-shrink: 0;
-}
+/* ---- Encabezado y acción "Aprovisionar tenant": .page-header/.page-action
+   ahora viven en styles.scss global (se reutilizan en varias pantallas) ---- */
 
 /* ---- Franja de manifiesto: los contadores en vivo por estado ---- */
 .manifest-strip {

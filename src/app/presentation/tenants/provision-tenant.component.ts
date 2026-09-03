@@ -1,13 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router, RouterLink } from '@angular/router';
 import { BillingRepository } from '../../application/billing/billing-repository.port';
 import { TenantRepository } from '../../application/tenant/tenant-repository.port';
 import { Plan } from '../../domain/billing/plan.model';
@@ -95,7 +95,7 @@ export class ProvisionTenantComponent {
     });
   }
 
-  goToTenants(): void {
-    this.router.navigateByUrl('/tenants');
+  close(): void {
+    this.router.navigate(['/tenants']);
   }
 }

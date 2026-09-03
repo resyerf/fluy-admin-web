@@ -3,7 +3,10 @@
     <span class="eyebrow">Plataforma · Tenants</span>
     <h2>Registro de tenants</h2>
   </div>
-  <a mat-flat-button color="primary" routerLink="/tenants/new" class="page-action">Aprovisionar tenant</a>
+  <a mat-flat-button color="primary" class="page-action" routerLink="/tenants/new">
+    <mat-icon>add</mat-icon>
+    Aprovisionar tenant
+  </a>
 </div>
 
 @if (loading()) {

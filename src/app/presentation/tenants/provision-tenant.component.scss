@@ -1,59 +1,48 @@
 /* ==========================================================================
-   Alta de tenant como su propia pantalla — la terminal de ingreso a la
-   flota (ver tenants-admin.component.scss para el resto del vocabulario
-   de torre de control). Vive sola en la ruta para no competir con el
-   registro, y para poder crecer (planes, duración) sin apretar la lista.
+   Alta de tenant — pantalla propia, no diálogo (ver tenants-admin.component.scss
+   para el resto del vocabulario de torre de control). Es la acción de mayor
+   peso de toda la consola — da de alta un cliente pagante — y su propio
+   estado de dos fases (formulario → resultado con resumen) necesita más
+   lugar del que un cuadro centrado da cómodo; una pantalla también permite
+   volver atrás/refrescar sin perder el resultado, algo que un diálogo no da.
    ========================================================================== */
-
-:host {
-  display: block;
-  max-width: 480px;
-  margin: 0 auto;
-}
 
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: var(--ink-soft);
   text-decoration: none;
-  margin-bottom: 1rem;
+  margin-bottom: 0.4rem;
 }
 .back-link:hover {
   color: var(--ink);
 }
 .back-link mat-icon {
-  font-size: 1rem;
-  width: 1rem;
-  height: 1rem;
+  font-size: 1.05rem;
+  width: 1.05rem;
+  height: 1.05rem;
 }
 
 .intake {
-  border: 1px solid var(--rail);
-  border-radius: 6px;
-  background: var(--console-paper);
-  padding: 1.3rem 1.3rem 1.5rem;
+  max-width: 480px;
 }
-.intake-eyebrow {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 0.25rem;
+
+.intake-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rail);
 }
-.intake h2 {
-  margin: 0 0 0.35rem;
-}
+
 .intake-hint {
-  margin: 0 0 1rem;
+  margin: 0 0 0.9rem;
   font-size: 0.85rem;
   color: var(--ink-soft);
   line-height: 1.4;
@@ -83,22 +72,11 @@
 .intake-note.is-error {
   color: var(--signal-stop);
 }
-.intake-submit {
-  width: 100%;
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.intake-submit mat-spinner {
-  --mdc-circular-progress-active-indicator-color: var(--paper);
-}
 
 /* ---- Confirmación tras aprovisionar ---- */
 .result-summary {
-  margin: 1rem 0 0;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--rail-strong);
+  margin: 0;
+  padding: 0;
 }
 .result-row {
   display: flex;
@@ -106,6 +84,10 @@
   gap: 1rem;
   padding: 0.35rem 0;
   font-size: 0.87rem;
+  border-bottom: 1px solid var(--rail);
+}
+.result-row:last-child {
+  border-bottom: none;
 }
 .result-row dt {
   font-family: var(--font-mono);

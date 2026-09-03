@@ -15,3 +15,12 @@
       .empty-note {
         color: var(--ink-faint);
       }
+      .row-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .plan-select {
+        width: 130px;
+        margin-bottom: -1.25em;
+      }

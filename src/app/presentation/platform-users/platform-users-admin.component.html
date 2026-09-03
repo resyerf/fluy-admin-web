@@ -1,0 +1,100 @@
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Plataforma · Equipo</span>
+    <h2>Personal de FLUY</h2>
+  </div>
+  <button mat-flat-button color="primary" class="page-action" (click)="showCreateForm.set(!showCreateForm())">
+    <mat-icon>{{ showCreateForm() ? 'close' : 'add' }}</mat-icon>
+    {{ showCreateForm() ? 'Cancelar' : 'Nuevo usuario' }}
+  </button>
+</div>
+
+@if (showCreateForm()) {
+  <mat-card class="create-card">
+    <mat-card-content>
+      @if (errorMessage(); as message) {
+        <p class="error-banner">{{ message }}</p>
+      }
+      <form class="create-form" (ngSubmit)="create()">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" name="email" [(ngModel)]="email" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre completo</mat-label>
+          <input matInput name="fullName" [(ngModel)]="fullName" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña inicial</mat-label>
+          <input matInput type="password" name="password" [(ngModel)]="password" required minlength="8" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select name="role" [(ngModel)]="role" required>
+            @for (r of roles; track r) {
+              <mat-option [value]="r">{{ r }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit">Crear</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+}
+
+@if (loading()) {
+  <mat-spinner diameter="32" />
+} @else {
+  <mat-card class="list-card">
+    <mat-card-content>
+      @if (users().length === 0) {
+        <p class="empty-note">Todavía no hay personal de FLUY registrado.</p>
+      } @else {
+        <div class="table-scroll">
+          <table mat-table [dataSource]="users()" class="users-table">
+            <ng-container matColumnDef="fullName">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let user">{{ user.fullName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+            </ng-container>
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef>Rol</th>
+              <td mat-cell *matCellDef="let user">
+                <mat-form-field appearance="outline" class="role-select">
+                  <mat-select
+                    [value]="user.role"
+                    [disabled]="actingOn() === user.id"
+                    (selectionChange)="changeRole(user, $event.value)"
+                  >
+                    @for (r of roles; track r) {
+                      <mat-option [value]="r">{{ r }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Estado</th>
+              <td mat-cell *matCellDef="let user">
+                <span class="signal" [class]="signalByStatus[user.status]">{{ user.status }}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let user">
+                <button mat-stroked-button [disabled]="actingOn() === user.id" (click)="toggleStatus(user)">
+                  {{ user.status === 'Active' ? 'Desactivar' : 'Activar' }}
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns"></tr>
+          </table>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+}

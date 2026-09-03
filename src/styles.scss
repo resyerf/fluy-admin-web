@@ -90,6 +90,25 @@ a:visited {
   max-width: 1040px;
 }
 
+/* ---- page header: title + primary "create" action for a list screen ---- */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.page-header h2 {
+  margin-bottom: 0;
+}
+.page-action {
+  flex-shrink: 0;
+}
+.page-action mat-icon {
+  margin-right: 0.25rem;
+}
+
 .eyebrow {
   display: block;
   font-family: var(--font-mono);
@@ -247,6 +266,13 @@ a:visited {
 .mdc-linear-progress__bar-inner,
 .mat-mdc-progress-spinner circle {
   stroke: var(--accent) !important;
+}
+
+/* A spinner dropped inside a filled primary button would otherwise stroke in
+   --accent on an --accent fill — invisible while the button is doing exactly
+   the thing it needs to show (e.g. "Aprovisionar tenant" while saving). */
+.mat-mdc-unelevated-button.mat-primary .mat-mdc-progress-spinner circle {
+  stroke: var(--paper) !important;
 }
 
 /* ---- Autocomplete panel — mismo cromado de superficie que .mat-mdc-card. ---- */

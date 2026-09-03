@@ -33,6 +33,29 @@
                   <th mat-header-cell *matHeaderCellDef>Fin de trial</th>
                   <td mat-cell *matCellDef="let sub">{{ sub.trialEndsAt ? (sub.trialEndsAt | date: 'short') : '—' }}</td>
                 </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let sub">
+                    @if (sub.status !== 'Cancelled') {
+                      <div class="row-actions">
+                        <mat-form-field appearance="outline" class="plan-select">
+                          <mat-select
+                            [value]="sub.planCode"
+                            [disabled]="actingOn() === sub.id"
+                            (selectionChange)="changePlan(sub, $event.value)"
+                          >
+                            @for (plan of plans(); track plan.code) {
+                              <mat-option [value]="plan.code">{{ plan.code }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                        <button mat-stroked-button color="warn" [disabled]="actingOn() === sub.id" (click)="cancel(sub)">
+                          Cancelar
+                        </button>
+                      </div>
+                    }
+                  </td>
+                </ng-container>
                 <tr mat-header-row *matHeaderRowDef="columns"></tr>
                 <tr mat-row *matRowDef="let row; columns: columns"></tr>
               </table>

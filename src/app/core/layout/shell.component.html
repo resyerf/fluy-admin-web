@@ -1,13 +1,39 @@
+<mat-sidenav-container class="shell-container">
+  <mat-sidenav #drawer class="shell-drawer" mode="over" position="start" [fixedInViewport]="true">
+    <div class="drawer-header">
+      <span class="brand-mark">FLUY</span>
+      <button mat-icon-button (click)="drawer.close()" aria-label="Cerrar menú">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      @for (link of navLinks; track link.path) {
+        <a [routerLink]="link.path" routerLinkActive="is-active" (click)="drawer.close()">
+          <mat-icon>{{ link.icon }}</mat-icon>
+          {{ link.label }}
+        </a>
+      }
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
     <mat-toolbar class="shell-toolbar">
+      <button mat-icon-button class="nav-toggle" (click)="drawer.toggle()" aria-label="Abrir menú">
+        <mat-icon>menu</mat-icon>
+      </button>
+
       <a routerLink="/tenants" class="brand">
         <span class="brand-mark">FLUY</span>
         <span class="brand-tenant">Consola de plataforma</span>
       </a>
 
       <nav class="shell-nav">
-        <a routerLink="/tenants" routerLinkActive="is-active">Tenants</a>
-        <a routerLink="/plans" routerLinkActive="is-active">Planes</a>
-        <a routerLink="/subscriptions" routerLinkActive="is-active">Suscripciones</a>
+        @for (link of navLinks; track link.path) {
+          <a [routerLink]="link.path" routerLinkActive="is-active">
+            <mat-icon inline="true">{{ link.icon }}</mat-icon>
+            {{ link.label }}
+          </a>
+        }
       </nav>
 
       <span class="spacer"></span>
@@ -23,3 +49,5 @@
     <main class="shell-content">
       <router-outlet />
     </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

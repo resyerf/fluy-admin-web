@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  max-width: 1160px;
+}
+
+.create-card {
+  max-width: 900px;
+  margin-bottom: 1.5rem;
+}
+.create-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.error-banner {
+  color: var(--signal-stop, #c0392b);
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+}
+
+.list-card {
+  max-width: 900px;
+}
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+.users-table {
+  min-width: 640px;
+}
+.role-select {
+  width: 160px;
+  margin-bottom: -1.25em;
+}
+.empty-note {
+  color: var(--ink-faint);
+}

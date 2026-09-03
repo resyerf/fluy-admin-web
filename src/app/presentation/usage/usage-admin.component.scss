@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  max-width: 1160px;
+}
+
+.tenant-select {
+  width: 320px;
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.metric-card {
+  padding: 0.25rem;
+}
+.metric-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.6rem;
+}
+.metric-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.empty-note {
+  color: var(--ink-faint);
+}

@@ -1,0 +1,126 @@
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Plataforma · Billing</span>
+    <h2>Facturas</h2>
+  </div>
+  <button mat-flat-button color="primary" class="page-action" (click)="showIssueForm.set(!showIssueForm())">
+    <mat-icon>{{ showIssueForm() ? 'close' : 'add' }}</mat-icon>
+    {{ showIssueForm() ? 'Cancelar' : 'Emitir factura' }}
+  </button>
+</div>
+
+@if (showIssueForm()) {
+  <mat-card class="create-card">
+    <mat-card-content>
+      <form class="create-form" (ngSubmit)="issueInvoice()">
+        <mat-form-field appearance="outline">
+          <mat-label>Suscripción</mat-label>
+          <mat-select name="subscriptionId" [(ngModel)]="issueSubscriptionId" required>
+            @for (sub of subscriptions(); track sub.id) {
+              <mat-option [value]="sub.id">{{ sub.tenantName }} ({{ sub.planCode }})</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Monto total</mat-label>
+          <input matInput type="number" min="0.01" step="0.01" name="totalAmount" [(ngModel)]="issueTotalAmount" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Moneda</mat-label>
+          <input matInput name="currency" [(ngModel)]="issueCurrency" required maxlength="3" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Vencimiento</mat-label>
+          <input matInput type="date" name="dueDate" [(ngModel)]="issueDueDate" required />
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" [disabled]="busy() === 'issue'">Emitir</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+}
+
+@if (loading()) {
+  <mat-spinner diameter="32" />
+} @else {
+  <mat-card class="list-card">
+    <mat-card-content>
+      @if (invoices().length === 0) {
+        <p class="empty-note">Todavía no hay facturas emitidas.</p>
+      } @else {
+        <div class="table-scroll">
+          <table mat-table [dataSource]="invoices()" class="invoices-table">
+            <ng-container matColumnDef="number">
+              <th mat-header-cell *matHeaderCellDef>Número</th>
+              <td mat-cell *matCellDef="let inv">{{ inv.number }}</td>
+            </ng-container>
+            <ng-container matColumnDef="tenant">
+              <th mat-header-cell *matHeaderCellDef>Tenant</th>
+              <td mat-cell *matCellDef="let inv">{{ inv.tenantName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Estado</th>
+              <td mat-cell *matCellDef="let inv">
+                <span class="signal" [class]="signalByStatus[inv.status]">{{ inv.status }}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="issueDate">
+              <th mat-header-cell *matHeaderCellDef>Emisión</th>
+              <td mat-cell *matCellDef="let inv">{{ inv.issueDate | date: 'short' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="dueDate">
+              <th mat-header-cell *matHeaderCellDef>Vencimiento</th>
+              <td mat-cell *matCellDef="let inv">{{ inv.dueDate | date: 'short' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef>Total</th>
+              <td mat-cell *matCellDef="let inv">{{ inv.totalAmount | number: '1.2-2' }} {{ inv.currency }}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let inv">
+                @if (inv.status !== 'Paid' && inv.status !== 'Void') {
+                  <button mat-stroked-button (click)="startPayment(inv)">Registrar pago</button>
+                }
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns"></tr>
+          </table>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+}
+
+@if (payingOn(); as invoice) {
+  <div class="payment-overlay" (click)="payingOn.set(null)">
+    <mat-card class="payment-card" (click)="$event.stopPropagation()">
+      <mat-card-content>
+        <h3>Registrar pago — {{ invoice.number }}</h3>
+        <form class="create-form" (ngSubmit)="recordPayment()">
+          <mat-form-field appearance="outline">
+            <mat-label>Monto</mat-label>
+            <input matInput type="number" min="0.01" step="0.01" name="amount" [(ngModel)]="paymentAmount" required />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Método</mat-label>
+            <mat-select name="method" [(ngModel)]="paymentMethod" required>
+              <mat-option value="Manual">Manual</mat-option>
+              <mat-option value="BankTransfer">Transferencia</mat-option>
+              <mat-option value="Card">Tarjeta</mat-option>
+              <mat-option value="Other">Otro</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Referencia (opcional)</mat-label>
+            <input matInput name="reference" [(ngModel)]="paymentReference" />
+          </mat-form-field>
+          <div class="payment-actions">
+            <button mat-button type="button" (click)="payingOn.set(null)">Cancelar</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="busy() === invoice.id">Confirmar</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

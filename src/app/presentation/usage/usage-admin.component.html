@@ -1,0 +1,35 @@
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Plataforma · Consumo</span>
+    <h2>Usage</h2>
+  </div>
+</div>
+
+<mat-form-field appearance="outline" class="tenant-select">
+  <mat-label>Tenant</mat-label>
+  <mat-select [value]="selectedTenantId()" (selectionChange)="selectTenant($event.value)">
+    @for (tenant of tenants(); track tenant.id) {
+      <mat-option [value]="tenant.id">{{ tenant.name }} ({{ tenant.subdomain }})</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+@if (loading()) {
+  <mat-spinner diameter="32" />
+} @else if (metrics().length > 0) {
+  <div class="metrics-grid">
+    @for (metric of metrics(); track metric.metricCode) {
+      <mat-card class="metric-card">
+        <mat-card-content>
+          <div class="metric-heading">
+            <span class="metric-name">{{ metric.metricName }}</span>
+            <span class="metric-value">{{ metric.used }} / {{ metric.limit === 'unlimited' ? '∞' : metric.limit ?? '—' }}</span>
+          </div>
+          <mat-progress-bar mode="determinate" [value]="progressOf(metric)"></mat-progress-bar>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+} @else {
+  <p class="empty-note">Sin datos de consumo para este tenant.</p>
+}

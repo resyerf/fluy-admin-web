@@ -1,0 +1,49 @@
+:host {
+  display: block;
+  max-width: 1160px;
+}
+
+.create-card {
+  max-width: 900px;
+  margin-bottom: 1.5rem;
+}
+.create-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.list-card {
+  max-width: 960px;
+}
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+.invoices-table {
+  min-width: 720px;
+}
+.empty-note {
+  color: var(--ink-faint);
+}
+
+.payment-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.payment-card {
+  width: min(420px, 90vw);
+}
+.payment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}

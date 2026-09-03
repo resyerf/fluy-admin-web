@@ -1,12 +1,16 @@
-<a routerLink="/tenants" class="back-link">
-  <mat-icon inline="true">arrow_back</mat-icon>
-  Tenants
-</a>
+<div class="page-header">
+  <div>
+    <a class="back-link" routerLink="/tenants">
+      <mat-icon inline="true">arrow_back</mat-icon>
+      Tenants
+    </a>
+    <h2>{{ result() ? 'Tenant aprovisionado' : 'Aprovisionar tenant' }}</h2>
+  </div>
+</div>
 
-@if (result(); as r) {
-  <section class="intake intake-done" aria-label="Tenant aprovisionado">
-    <span class="intake-eyebrow">Ingreso a la flota</span>
-    <h2>Tenant aprovisionado</h2>
+<div class="intake">
+  @if (result(); as r) {
+    <p class="intake-hint">Ingreso a la flota</p>
 
     @if (r.activationEmailSent) {
       <p class="intake-note is-ok">Tenant creado. Se envió un email de activación al usuario master.</p>
@@ -31,12 +35,10 @@
       </div>
     </dl>
 
-    <button mat-flat-button color="primary" class="intake-submit" (click)="goToTenants()">Volver al registro</button>
-  </section>
-} @else {
-  <section class="intake" aria-label="Aprovisionar nuevo tenant">
-    <span class="intake-eyebrow">Ingreso a la flota</span>
-    <h2>Aprovisionar tenant</h2>
+    <div class="intake-actions">
+      <button mat-flat-button color="primary" (click)="close()">Volver al registro</button>
+    </div>
+  } @else {
     <p class="intake-hint">Crea la empresa, su sede administrativa y el usuario master en un solo paso.</p>
 
     <div class="intake-fields">
@@ -88,18 +90,20 @@
       <p class="intake-note is-error">{{ error }}</p>
     }
 
-    <button
-      mat-flat-button
-      color="primary"
-      class="intake-submit"
-      [disabled]="saving() || !name || !subdomain || !masterEmail || !masterFullName"
-      (click)="provision()"
-    >
-      @if (saving()) {
-        <mat-spinner diameter="18" />
-      } @else {
-        Aprovisionar tenant
-      }
-    </button>
-  </section>
-}
+    <div class="intake-actions">
+      <a mat-button routerLink="/tenants">Cancelar</a>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="saving() || !name || !subdomain || !masterEmail || !masterFullName"
+        (click)="provision()"
+      >
+        @if (saving()) {
+          <mat-spinner diameter="18" />
+        } @else {
+          Aprovisionar tenant
+        }
+      </button>
+    </div>
+  }
+</div>

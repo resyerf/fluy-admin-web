@@ -30,6 +30,19 @@ export const routes: Routes = [
         path: 'subscriptions',
         loadComponent: () =>
           import('./presentation/subscriptions/subscriptions-admin.component').then((m) => m.SubscriptionsAdminComponent)
+      },
+      {
+        path: 'invoices',
+        loadComponent: () => import('./presentation/invoices/invoices-admin.component').then((m) => m.InvoicesAdminComponent)
+      },
+      {
+        path: 'usage',
+        loadComponent: () => import('./presentation/usage/usage-admin.component').then((m) => m.UsageAdminComponent)
+      },
+      {
+        path: 'platform-users',
+        loadComponent: () =>
+          import('./presentation/platform-users/platform-users-admin.component').then((m) => m.PlatformUsersAdminComponent)
       }
     ]
   },

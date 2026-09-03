@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterLink } from '@angular/router';
 import { TenantRepository } from '../../application/tenant/tenant-repository.port';
 import { Tenant } from '../../domain/tenant/tenant.model';
 
@@ -27,7 +28,7 @@ function statusLabelOf(status: string): string {
 @Component({
   selector: 'app-tenants-admin',
   standalone: true,
-  imports: [DatePipe, RouterLink, MatButtonModule, MatProgressSpinnerModule],
+  imports: [DatePipe, RouterLink, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './tenants-admin.component.html',
   styleUrl: './tenants-admin.component.scss'
 })
